@@ -80,7 +80,7 @@ function log(truck::LumberjackTruck, l::Dict)
     record = date_stamp == nothing ? "" : "$date_stamp - "
 
     lookup = get(l, :lookup, nothing)
-    if !is(lookup, nothing)
+    if !(lookup === nothing)
         # lookup is a StackFrame
         name, file, line = l[:lookup].func, l[:lookup].file, l[:lookup].line
         lookup_str = "$(name)@$(basename(string(file))):$(line) - "
@@ -95,7 +95,7 @@ function log(truck::LumberjackTruck, l::Dict)
     record = string(record, "$(l[:mode]): $(l[:msg])")
 
     stacktrace = get(l, :stacktrace, nothing)
-    if !is(stacktrace, nothing)
+    if !(stacktrace === nothing)
         # stacktrace is a vector of StackFrames
         record = record * string(" stack:[",
             join(
