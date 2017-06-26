@@ -1,6 +1,6 @@
 using JSON
 
-abstract TimberTruck
+@compat abstract type TimberTruck end
 
 log(t::TimberTruck, a::Dict) = error("please implement `log(truck::$(typeof(t)), args::Dict)`")
 
