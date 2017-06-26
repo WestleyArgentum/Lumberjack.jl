@@ -19,8 +19,9 @@ remove_truck("infotruck")
 log_lines = readlines(open(MODE_LOG_FILE, "r"))
 
 fn_regex = "caller@\\Q$(basename(@__FILE__))\\E:\\d+"
-@test log_lines[1] == "info: Message\n"
-@test log_lines[2] == "warn: Message\n"
+X = VERSION >= v"0.6.0" ? "" : "\n"
+@test log_lines[1] == "info: Message$(X)"
+@test log_lines[2] == "warn: Message$(X)"
 @test ismatch(Regex(fn_regex * ".+error: Message"), log_lines[3])
 @test ismatch(Regex(fn_regex * ".+crazy: Message"), log_lines[4])
 
