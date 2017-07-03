@@ -75,11 +75,12 @@ line = 0
 
 
 # test without extra saws
-line += 1; @test log_lines[line] == "debug: some-msg\n"
-line += 1; @test log_lines[line] == "info: some-msg\n"
-line += 1; @test log_lines[line] == "warn: some-msg\n"
-line += 1; @test log_lines[line] == "error: some-msg\n"
-line += 1; @test log_lines[line] == "crazy: some-msg\n"
+X = VERSION >= v"0.6.0" ? "" : "\n"
+line += 1; @test log_lines[line] == "debug: some-msg$(X)"
+line += 1; @test log_lines[line] == "info: some-msg$(X)"
+line += 1; @test log_lines[line] == "warn: some-msg$(X)"
+line += 1; @test log_lines[line] == "error: some-msg$(X)"
+line += 1; @test log_lines[line] == "crazy: some-msg$(X)"
 
 
 # test with msec_date_saw
@@ -114,20 +115,24 @@ line += 1
 @test contains(log_lines[line], "thing2: 69")
 @test contains(log_lines[line], "thing1: \"thing1\"")
 
+X = VERSION>=v"0.6.0" ? " " : ""
+
 line += 1
 @test contains(log_lines[line], "warn: some-msg")
 @test contains(log_lines[line], "thing2: 69")
-@test contains(log_lines[line], "thing3: [1,2,3]")
+@test contains(log_lines[line], "thing3: [1,$(X)2,$(X)3]")
 @test contains(log_lines[line], "thing1: \"thing1\"")
 
 line += 1
 @test contains(log_lines[line], "error: some-msg")
 @test contains(log_lines[line], "thing2: 69")
-@test contains(log_lines[line], "thing3: [1,2,3]")
+@test contains(log_lines[line], "thing3: [1,$(X)2,$(X)3]")
 if VERSION < v"0.5.0-"
 	@test ismatch(r"thing4:.*\"a\"=>\"apple\"", log_lines[line])
-else
+elseif VERSION < v"0.6.0"
 	@test ismatch(r"thing4:.*\"a\",\"apple\"", log_lines[line])
+else
+	@test ismatch(r"thing4:.*\"a\", \"apple\"", log_lines[line])
 end
 @test contains(log_lines[line], "thing1: \"thing1\"")
 
@@ -135,12 +140,15 @@ line += 1
 @test contains(log_lines[line], "crazy: some-msg")
 @test contains(log_lines[line], "thing2: 69")
 @test contains(log_lines[line], "thing5: :some_symbol")
-@test contains(log_lines[line], "thing3: [1,2,3]")
+@test contains(log_lines[line], "thing3: [1,$(X)2,$(X)3]")
 if VERSION < v"0.5.0-"
 	@test ismatch(r"thing4:.*\"a\"=>\"apple\"", log_lines[line])
-else
+elseif VERSION < v"0.6.0"
 	@test ismatch(r"thing4:.*\"a\",\"apple\"", log_lines[line])
+else
+	@test ismatch(r"thing4:.*\"a\", \"apple\"", log_lines[line])
 end
+
 @test contains(log_lines[line], "thing1: \"thing1\"")
 
 
@@ -157,17 +165,19 @@ line += 1
 line += 1
 @test contains(log_lines[line], "warn: some-msg")
 @test contains(log_lines[line], "thing2: 69")
-@test contains(log_lines[line], "thing3: [1,2,3]")
+@test contains(log_lines[line], "thing3: [1,$(X)2,$(X)3]")
 @test contains(log_lines[line], "thing1: \"thing1\"")
 
 line += 1
 @test contains(log_lines[line], "error: some-msg")
 @test contains(log_lines[line], "thing2: 69")
-@test contains(log_lines[line], "thing3: [1,2,3]")
+@test contains(log_lines[line], "thing3: [1,$(X)2,$(X)3]")
 if VERSION < v"0.5.0-"
 	@test ismatch(r"thing4:.*\"a\"=>\"apple\"", log_lines[line])
-else
+elseif VERSION < v"0.6.0"
 	@test ismatch(r"thing4:.*\"a\",\"apple\"", log_lines[line])
+else
+	@test ismatch(r"thing4:.*\"a\", \"apple\"", log_lines[line])
 end
 @test contains(log_lines[line], "thing1: \"thing1\"")
 
@@ -175,12 +185,15 @@ line += 1
 @test contains(log_lines[line], "crazy: some-msg")
 @test contains(log_lines[line], "thing2: 69")
 @test contains(log_lines[line], "thing5: :some_symbol")
-@test contains(log_lines[line], "thing3: [1,2,3]")
+@test contains(log_lines[line], "thing3: [1,$(X)2,$(X)3]")
 if VERSION < v"0.5.0-"
 	@test ismatch(r"thing4:.*\"a\"=>\"apple\"", log_lines[line])
-else
+elseif VERSION < v"0.6.0"
 	@test ismatch(r"thing4:.*\"a\",\"apple\"", log_lines[line])
+else
+	@test ismatch(r"thing4:.*\"a\", \"apple\"", log_lines[line])
 end
+
 @test contains(log_lines[line], "thing1: \"thing1\"")
 
 # clean up
