@@ -2,7 +2,8 @@ VERSION >= v"0.4.0-dev+6521" && __precompile__()
 
 module Lumberjack
 
-import Base.show, Base.info, Base.log, Compat.@compat
+using Compat
+import Base.show, Base.info, Base.log
 #import Mocking: @mendable # TODO - figure out how to use Mocking on 0.5
 
 if !isdefined(Base, :StackTraces)
